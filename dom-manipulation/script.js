@@ -221,3 +221,72 @@ function resolveConflicts(serverQuotes) {
 
 // Periodically fetch new data from server (e.g., every 60 seconds)
 setInterval(fetchQuotesFromServer, 60000);
+// Simulated server URL (using JSONPlaceholder for mock server)
+const SERVER_URL = "https://jsonplaceholder.typicode.com/posts";
+
+// Function to fetch quotes from the simulated server
+async function fetchQuotesFromServer() {
+  try {
+    const response = await fetch(SERVER_URL);
+    const serverData = await response.json();
+
+    // Convert server response into quotes
+    const serverQuotes = serverData.slice(0, 5).map(post => ({
+      text: post.title,
+      author: `User ${post.userId}`,
+      category: "Server"
+    }));
+
+    console.log("Fetched quotes from server:", serverQuotes);
+    resolveConflicts(serverQuotes);
+  } catch (error) {
+    console.error("Error fetching quotes from server:", error);
+  }
+}
+
+// Function to send (POST) local quotes to the server
+async function syncQuotesToServer() {
+  const localQuotes = JSON.parse(localStorage.getItem("quotes")) || [];
+
+  try {
+    const response = await fetch(SERVER_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(localQuotes)
+    });
+
+    if (response.ok) {
+      alert("Quotes successfully synced to the server!");
+      console.log("Uploaded quotes:", localQuotes);
+    } else {
+      alert("Failed to sync quotes to the server.");
+    }
+  } catch (error) {
+    console.error("Error posting quotes:", error);
+  }
+}
+
+// Conflict resolution: server data takes precedence
+function resolveConflicts(serverQuotes) {
+  const localQuotes = JSON.parse(localStorage.getItem("quotes")) || [];
+
+  // Merge, removing duplicates by quote text
+  const mergedQuotes = [...serverQuotes];
+  localQuotes.forEach(localQuote => {
+    const exists = serverQuotes.find(
+      q => q.text.toLowerCase() === localQuote.text.toLowerCase()
+    );
+    if (!exists) mergedQuotes.push(localQuote);
+  });
+
+  localStorage.setItem("quotes", JSON.stringify(mergedQuotes));
+  quotes = mergedQuotes;
+  displayQuotes();
+
+  console.log("Conflict resolved. Merged quotes saved locally.");
+}
+
+// Automatically fetch from server every minute
+setInterval(fetchQuotesFromServer, 60000);
