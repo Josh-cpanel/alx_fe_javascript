@@ -9,7 +9,7 @@
       font-family: Arial, sans-serif;
       background-color: #f8f9fa;
       text-align: center;
-      margin: 50px;
+      margin: 40px;
     }
 
     h1 {
@@ -28,13 +28,13 @@
     }
 
     button {
-      padding: 10px 20px;
+      padding: 10px 18px;
       border: none;
       border-radius: 8px;
       background-color: #007bff;
       color: white;
       cursor: pointer;
-      margin: 10px;
+      margin: 5px;
     }
 
     button:hover {
@@ -54,6 +54,10 @@
       border-radius: 6px;
       border: 1px solid #ccc;
     }
+
+    #importFile {
+      display: none;
+    }
   </style>
 </head>
 <body>
@@ -67,7 +71,17 @@
 
   <div id="quoteDisplay">Your quote will appear here...</div>
 
-  <h3>Add a New Quote</h3>
+  <!-- Quote Management Controls -->
+  <div style="margin-top: 20px;">
+    <button id="exportQuotes">Export Quotes (JSON)</button>
+    <label for="importFile" style="cursor: pointer;">
+      <button id="importQuotes">Import Quotes (JSON)</button>
+    </label>
+    <input type="file" id="importFile" accept=".json" />
+  </div>
+
+  <!-- Add Quote Form -->
+  <h3 style="margin-top: 30px;">Add a New Quote</h3>
   <div>
     <input id="newQuoteText" type="text" placeholder="Enter a new quote" />
     <input id="newQuoteCategory" type="text" placeholder="Enter quote category" />
