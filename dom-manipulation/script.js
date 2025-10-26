@@ -169,3 +169,55 @@ addQuoteBtn.addEventListener("click", addQuote);
 exportBtn.addEventListener("click", exportQuotes);
 importInput.addEventListener("change", importFromJsonFile);
 syncBtn.addEventListener("click", syncWithServer);
+
+// Simulated server URL using JSONPlaceholder (mock API)
+const SERVER_URL = "https://jsonplaceholder.typicode.com/posts";
+
+// Fetch quotes from server (simulated)
+async function fetchQuotesFromServer() {
+  try {
+    const response = await fetch(SERVER_URL);
+    const serverData = await response.json();
+
+    // Simulate extracting quotes from the mock API
+    const serverQuotes = serverData.slice(0, 5).map(post => ({
+      text: post.title,
+      author: `User ${post.userId}`,
+      category: "Server"
+    }));
+
+    console.log("Fetched quotes from server:", serverQuotes);
+
+    // Resolve conflicts and merge with local storage
+    resolveConflicts(serverQuotes);
+  } catch (error) {
+    console.error("Error fetching quotes from server:", error);
+  }
+}
+
+// Conflict resolution strategy: server data takes precedence
+function resolveConflicts(serverQuotes) {
+  const localQuotes = JSON.parse(localStorage.getItem("quotes")) || [];
+
+  // Basic merge logic — overwrite duplicates, keep unique ones
+  const mergedQuotes = [...serverQuotes];
+  localQuotes.forEach(localQuote => {
+    const duplicate = serverQuotes.find(
+      q => q.text.toLowerCase() === localQuote.text.toLowerCase()
+    );
+    if (!duplicate) mergedQuotes.push(localQuote);
+  });
+
+  // Save the merged result
+  localStorage.setItem("quotes", JSON.stringify(mergedQuotes));
+
+  // Update the display
+  quotes = mergedQuotes;
+  displayQuotes();
+
+  // Notify user
+  alert("Quotes synced with server successfully!");
+}
+
+// Periodically fetch new data from server (e.g., every 60 seconds)
+setInterval(fetchQuotesFromServer, 60000);
