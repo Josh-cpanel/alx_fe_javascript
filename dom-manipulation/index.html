@@ -3,24 +3,20 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dynamic Quote Generator with Filters</title>
+  <title>Dynamic Quote Generator - Data Sync</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      background-color: #f8f9fa;
+      background: #f8f9fa;
       text-align: center;
       margin: 40px;
-    }
-
-    h1 {
-      color: #333;
     }
 
     #quoteDisplay {
       margin: 20px auto;
       padding: 20px;
       width: 60%;
-      background-color: #fff;
+      background: #fff;
       border-radius: 10px;
       box-shadow: 0 4px 10px rgba(0,0,0,0.1);
       font-size: 1.2em;
@@ -31,30 +27,32 @@
       padding: 10px 18px;
       border: none;
       border-radius: 8px;
-      background-color: #007bff;
+      background: #007bff;
       color: white;
       cursor: pointer;
       margin: 5px;
     }
 
     button:hover {
-      background-color: #0056b3;
+      background: #0056b3;
     }
 
-    input, select {
-      padding: 8px;
-      margin: 5px;
+    #notification {
+      margin-top: 20px;
+      color: #155724;
+      background-color: #d4edda;
+      border: 1px solid #c3e6cb;
+      padding: 10px;
       border-radius: 6px;
-      border: 1px solid #ccc;
-    }
-
-    #importFile {
+      width: 60%;
+      margin-left: auto;
+      margin-right: auto;
       display: none;
     }
   </style>
 </head>
 <body>
-  <h1>Dynamic Quote Generator with Category Filter</h1>
+  <h1>Dynamic Quote Generator (Sync + Conflict Resolution)</h1>
 
   <div>
     <label for="categoryFilter">Filter by Category:</label>
@@ -68,11 +66,11 @@
   <div style="margin-top: 20px;">
     <button id="newQuote">Show New Quote</button>
     <button id="exportQuotes">Export Quotes (JSON)</button>
-    <label for="importFile" style="cursor: pointer;">
-      <button id="importQuotes">Import Quotes (JSON)</button>
-    </label>
+    <button id="syncQuotes">Sync Quotes with Server</button>
     <input type="file" id="importFile" accept=".json" />
   </div>
+
+  <div id="notification"></div>
 
   <h3 style="margin-top: 30px;">Add a New Quote</h3>
   <div>
