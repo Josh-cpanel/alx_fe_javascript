@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Dynamic Quote Generator</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dynamic Quote Generator with Filters</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -41,14 +41,7 @@
       background-color: #0056b3;
     }
 
-    input {
-      padding: 8px;
-      margin: 5px;
-      border-radius: 6px;
-      border: 1px solid #ccc;
-    }
-
-    select {
+    input, select {
       padding: 8px;
       margin: 5px;
       border-radius: 6px;
@@ -61,18 +54,19 @@
   </style>
 </head>
 <body>
-  <h1>Dynamic Quote Generator</h1>
+  <h1>Dynamic Quote Generator with Category Filter</h1>
 
   <div>
-    <label for="categorySelect">Select Category:</label>
-    <select id="categorySelect"></select>
-    <button id="newQuote">Show New Quote</button>
+    <label for="categoryFilter">Filter by Category:</label>
+    <select id="categoryFilter" onchange="filterQuotes()">
+      <option value="all">All Categories</option>
+    </select>
   </div>
 
   <div id="quoteDisplay">Your quote will appear here...</div>
 
-  <!-- Quote Management Controls -->
   <div style="margin-top: 20px;">
+    <button id="newQuote">Show New Quote</button>
     <button id="exportQuotes">Export Quotes (JSON)</button>
     <label for="importFile" style="cursor: pointer;">
       <button id="importQuotes">Import Quotes (JSON)</button>
@@ -80,11 +74,10 @@
     <input type="file" id="importFile" accept=".json" />
   </div>
 
-  <!-- Add Quote Form -->
   <h3 style="margin-top: 30px;">Add a New Quote</h3>
   <div>
-    <input id="newQuoteText" type="text" placeholder="Enter a new quote" />
-    <input id="newQuoteCategory" type="text" placeholder="Enter quote category" />
+    <input id="newQuoteText" type="text" placeholder="Enter a new quote">
+    <input id="newQuoteCategory" type="text" placeholder="Enter quote category">
     <button id="addQuote">Add Quote</button>
   </div>
 
